@@ -1,0 +1,18 @@
+services:
+  client:
+    build:
+      context: ../client
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "5174:5174"
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ../server
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8001:8001"
