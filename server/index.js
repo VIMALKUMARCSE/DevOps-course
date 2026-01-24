@@ -56,7 +56,7 @@ app.patch('/users/:id', (req, res) => {
 	users.splice(index, 1, { ...req.body });
 
 	fs.writeFile('./sample.json', JSON.stringify(users), (err, data) => {
-		return res.json({ message: 'User detail Updated sucessfully' });
+		return res.json({ message: 'User detail Updated sucessfully and Saved' });
 	});
 });
 
