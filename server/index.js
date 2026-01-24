@@ -34,7 +34,7 @@ app.delete('/users/:id', (req, res) => {
 app.post('/users', (req, res) => {
 	let { name, age, city } = req.body;
 	if (!name || !age || !city) {
-		res.status(400).send({ message: 'All fields Required' });
+		res.status(400).send({ message: 'All fields Required and full it' });
 	}
 	const id = Date.now();
 	users.push({ id, name, age, city });
