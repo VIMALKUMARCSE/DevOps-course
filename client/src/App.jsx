@@ -1,163 +1,319 @@
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// import "./App.css";
+// import { api, testApi } from "./api"; 
+
+// function App() {
+//   const [users, setUsers] = useState([]);
+//   const [filteruser, setFilterusers] = useState([]);
+//   const [isModalOpen, setIsModelOpen] = useState(false);
+//   const [userData, setUserData] = useState({name:"", age:"", city:""});
+
+//   const getAllUser = async () => {
+//     try {
+//       const res = await api.get("/users"); // ✅ NO base URL here
+//       setUsers(res.data);
+//       setFilterusers(res.data);
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   };
+
+// useEffect(() => {
+//   const loadData = async () => {
+//     try {
+//       const apiMsg = await testApi();
+//       console.log("API Test:", apiMsg);
+
+//       await getAllUser(); // ✅ this already sets users
+//     } catch (error) {
+//       console.error("Error loading data:", error);
+//     }
+//   };
+
+//   loadData();
+// }, []);
+
+ 
+//    //Search Function
+//    const handleSearchChange = (e) => {
+//       const searchtext = e.target.value.toLowerCase();
+//       const filteredUsers = users.filter((user)=>user.name.toLowerCase().includes(searchtext) ||
+//     user.city.toLowerCase().includes(searchtext));
+//     setFilterusers(filteredUsers);
+//    };
+
+//    //delect user function 
+//    const hanbleDelete= async (id) =>{
+//             const isConfirmed = window.confirm("Are you sure you want to delect this user?");
+//             if(isConfirmed){
+//             await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/users/${id}`).then((res) =>{
+//                     setUsers(res.data);
+//                     setFilterusers(res.data);
+//             });
+//           }
+//    };
+
+//    //Add User Details
+//    const handleAddRecord = () =>{
+//    setUserData({name:"", age:"", city:""});
+//    setIsModelOpen(true);
+//    };
+
+//    const handleData = (e) =>{
+//     setUserData({...userData, [e.target.name]:e.target.value})
+//    };
+
+//    const handleSubmit = async(e) => {
+//      e.preventDefault();
+//      if(userData.id){
+//       await axios.patch(`${import.meta.env.VITE_API_BASE_URL}/users/${userData.id}`, userData).then((res) => {
+//       console.log(res);
+//        });
+//      }
+//      else{
+//      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/users`, userData).then((res) => {
+//       console.log(res);
+//      });
+//     }
+//     closeModal();
+//     setUserData({name:"", age:"", city:""});
+//    };
+
+//    //Close modal
+//    const closeModal = () => {
+//     setIsModelOpen(false);
+//     getAllUser();
+//    };
+
+//    //Update User Function
+//    const handleUpdateRecord = (user) =>{
+//      setUserData(user);
+//      setIsModelOpen(true);
+//    };
+  
+//   return (
+//     <>
+//       <div className="container">
+//        <h3>CURD Application with React.js Frontend and Node.js Backend</h3>
+//        <div className="input-search">
+//         <input type="search" placeholder="Search Text Here" onChange={handleSearchChange}/>
+//         <button className="btn green" onClick={handleAddRecord}>Add Record</button>
+//        </div>
+//        <table className="table">
+//   <thead>
+//     <tr>
+//       <th>S.No</th>
+//       <th>Name</th>
+//       <th>Age</th>
+//       <th>City</th>
+//       <th>Edit</th>
+//       <th>Delete</th>
+//     </tr>
+//   </thead>
+//   <tbody>
+// {
+//   filteruser && filteruser.map((user, index) => {
+//     return (
+//           <tr key={user.id}>
+//       <td>{index + 1}</td>
+//       <td>{user.name}</td>
+//       <td>{user.age}</td>
+//       <td>{user.city}</td>
+//       <td>
+//         <button className="btn green" onClick={()=>handleUpdateRecord(user)}>Edit</button>
+//       </td>
+//       <td>
+//         <button onClick={()=> hanbleDelete(user.id)} className="btn green">Delete</button>
+//       </td>
+//     </tr>
+//     )
+//   })
+// }
+//   </tbody>
+// </table>
+// {isModalOpen && (
+//   <div className="modal">
+//     <div className="modal-content">
+//       <span className="close" onClick={closeModal}>&times;</span>
+//       <h2>
+//         {userData.id ? "Update Recode" : "User Record"}
+//       </h2>
+//       <div className="input-group">
+//         <label htmlFor="name">Full Name</label>
+//         <input type="text" value={userData.name} onChange={handleData} name="name" id="name"></input>
+//       </div>
+//             <div className="input-group">
+//         <label htmlFor="age">Age</label>
+//         <input type="number" value={userData.age} onChange={handleData} name="age" id="age"></input>
+//       </div>
+//       <div className="input-group">
+//         <label htmlFor="city">City</label>
+//         <input type="text" value={userData.city} onChange={handleData} name="city" id="city"></input>
+//       </div>
+//       <button className="btn green" onClick={handleSubmit}>{userData.id ? "Update Recode" : "User Record"}</button>
+//       </div>
+//   </div>
+// )}
+//       </div>
+//     </>
+//   )
+// }
+
+// export default App
+
 import { useEffect, useState } from "react";
-import axios from "axios";
 import "./App.css";
-import { api, testApi } from "./api"; 
+import { api, testApi } from "./api";
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [filteruser, setFilterusers] = useState([]);
-  const [isModalOpen, setIsModelOpen] = useState(false);
-  const [userData, setUserData] = useState({name:"", age:"", city:""});
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userData, setUserData] = useState({ name: "", age: "", city: "" });
 
-  const getAllUser = async () => {
+  const getAllUsers = async () => {
     try {
-      const res = await api.get("/users"); // ✅ NO base URL here
+      const res = await api.get("/users");
       setUsers(res.data);
-      setFilterusers(res.data);
+      setFilteredUsers(res.data);
     } catch (err) {
       console.error(err);
     }
   };
 
-useEffect(() => {
-  const loadData = async () => {
-    try {
-      const apiMsg = await testApi();
-      console.log("API Test:", apiMsg);
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const apiMsg = await testApi();
+        console.log("API Test:", apiMsg);
+        await getAllUsers();
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    };
 
-      await getAllUser(); // ✅ this already sets users
-    } catch (error) {
-      console.error("Error loading data:", error);
+    loadData();
+  }, []);
+
+  const handleSearchChange = (e) => {
+    const searchText = e.target.value.toLowerCase();
+    const filtered = users.filter(
+      (user) =>
+        user.name.toLowerCase().includes(searchText) ||
+        user.city.toLowerCase().includes(searchText)
+    );
+    setFilteredUsers(filtered);
+  };
+
+  const handleDelete = async (id) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this user?");
+    if (isConfirmed) {
+      const res = await api.delete(`/users/${id}`);
+      setUsers(res.data);
+      setFilteredUsers(res.data);
     }
   };
 
-  loadData();
-}, []);
+  const handleAddRecord = () => {
+    setUserData({ name: "", age: "", city: "" });
+    setIsModalOpen(true);
+  };
 
- 
-   //Search Function
-   const handleSearchChange = (e) => {
-      const searchtext = e.target.value.toLowerCase();
-      const filteredUsers = users.filter((user)=>user.name.toLowerCase().includes(searchtext) ||
-    user.city.toLowerCase().includes(searchtext));
-    setFilterusers(filteredUsers);
-   };
+  const handleData = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
 
-   //delect user function 
-   const hanbleDelete= async (id) =>{
-            const isConfirmed = window.confirm("Are you sure you want to delect this user?");
-            if(isConfirmed){
-            await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/users/${id}`).then((res) =>{
-                    setUsers(res.data);
-                    setFilterusers(res.data);
-            });
-          }
-   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-   //Add User Details
-   const handleAddRecord = () =>{
-   setUserData({name:"", age:"", city:""});
-   setIsModelOpen(true);
-   };
-
-   const handleData = (e) =>{
-    setUserData({...userData, [e.target.name]:e.target.value})
-   };
-
-   const handleSubmit = async(e) => {
-     e.preventDefault();
-     if(userData.id){
-      await axios.patch(`${import.meta.env.VITE_API_BASE_URL}/users/${userData.id}`, userData).then((res) => {
-      console.log(res);
-       });
-     }
-     else{
-     await axios.post(`${import.meta.env.VITE_API_BASE_URL}/users`, userData).then((res) => {
-      console.log(res);
-     });
+    if (userData.id) {
+      await api.patch(`/users/${userData.id}`, userData);
+    } else {
+      await api.post("/users", userData);
     }
+
     closeModal();
-    setUserData({name:"", age:"", city:""});
-   };
+    setUserData({ name: "", age: "", city: "" });
+  };
 
-   //Close modal
-   const closeModal = () => {
-    setIsModelOpen(false);
-    getAllUser();
-   };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    getAllUsers();
+  };
 
-   //Update User Function
-   const handleUpdateRecord = (user) =>{
-     setUserData(user);
-     setIsModelOpen(true);
-   };
-  
+  const handleUpdateRecord = (user) => {
+    setUserData(user);
+    setIsModalOpen(true);
+  };
+
   return (
-    <>
-      <div className="container">
-       <h3>CURD Application with React.js Frontend and Node.js Backend</h3>
-       <div className="input-search">
-        <input type="search" placeholder="Search Text Here" onChange={handleSearchChange}/>
+    <div className="container">
+      <h3>CRUD Application with React.js Frontend and Node.js Backend</h3>
+
+      <div className="input-search">
+        <input type="search" placeholder="Search Text Here" onChange={handleSearchChange} />
         <button className="btn green" onClick={handleAddRecord}>Add Record</button>
-       </div>
-       <table className="table">
-  <thead>
-    <tr>
-      <th>S.No</th>
-      <th>Name</th>
-      <th>Age</th>
-      <th>City</th>
-      <th>Edit</th>
-      <th>Delete</th>
-    </tr>
-  </thead>
-  <tbody>
-{
-  filteruser && filteruser.map((user, index) => {
-    return (
-          <tr key={user.id}>
-      <td>{index + 1}</td>
-      <td>{user.name}</td>
-      <td>{user.age}</td>
-      <td>{user.city}</td>
-      <td>
-        <button className="btn green" onClick={()=>handleUpdateRecord(user)}>Edit</button>
-      </td>
-      <td>
-        <button onClick={()=> hanbleDelete(user.id)} className="btn green">Delete</button>
-      </td>
-    </tr>
-    )
-  })
-}
-  </tbody>
-</table>
-{isModalOpen && (
-  <div className="modal">
-    <div className="modal-content">
-      <span className="close" onClick={closeModal}>&times;</span>
-      <h2>
-        {userData.id ? "Update Recode" : "User Record"}
-      </h2>
-      <div className="input-group">
-        <label htmlFor="name">Full Name</label>
-        <input type="text" value={userData.name} onChange={handleData} name="name" id="name"></input>
       </div>
+
+      <table className="table">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>City</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredUsers.map((user, index) => (
+            <tr key={user.id}>
+              <td>{index + 1}</td>
+              <td>{user.name}</td>
+              <td>{user.age}</td>
+              <td>{user.city}</td>
+              <td>
+                <button className="btn green" onClick={() => handleUpdateRecord(user)}>Edit</button>
+              </td>
+              <td>
+                <button className="btn green" onClick={() => handleDelete(user.id)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={closeModal}>&times;</span>
+            <h2>{userData.id ? "Update Record" : "Add User"}</h2>
+
             <div className="input-group">
-        <label htmlFor="age">Age</label>
-        <input type="number" value={userData.age} onChange={handleData} name="age" id="age"></input>
-      </div>
-      <div className="input-group">
-        <label htmlFor="city">City</label>
-        <input type="text" value={userData.city} onChange={handleData} name="city" id="city"></input>
-      </div>
-      <button className="btn green" onClick={handleSubmit}>{userData.id ? "Update Recode" : "User Record"}</button>
-      </div>
-  </div>
-)}
-      </div>
-    </>
-  )
+              <label htmlFor="name">Full Name</label>
+              <input type="text" name="name" value={userData.name} onChange={handleData} />
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="age">Age</label>
+              <input type="number" name="age" value={userData.age} onChange={handleData} />
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="city">City</label>
+              <input type="text" name="city" value={userData.city} onChange={handleData} />
+            </div>
+
+            <button className="btn green" onClick={handleSubmit}>
+              {userData.id ? "Update Record" : "Add User"}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
