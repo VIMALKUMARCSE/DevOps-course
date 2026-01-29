@@ -247,6 +247,8 @@ function App() {
     setIsModalOpen(true);
   };
 
+  let unusedvar = "unused varaible here";
+
   return (
     <div className="container">
       <h3>CRUD Application with React.js Frontend and Node.js Backend</h3>
