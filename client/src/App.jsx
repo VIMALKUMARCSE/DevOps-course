@@ -19,21 +19,21 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const apiMsg = await testApi();
-        console.log("API Test:", apiMsg);
+useEffect(() => {
+  const loadData = async () => {
+    try {
+      const apiMsg = await testApi();
+      console.log("API Test:", apiMsg);
 
-        const usersData = await getAllUser();
-        setUsers(usersData); // ✅ State update happens here (safe)
-      } catch (error) {
-        console.error("Error loading data:", error);
-      }
-    };
+      await getAllUser(); // ✅ this already sets users
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  };
 
-    loadData();
-  }, []);
+  loadData();
+}, []);
+
  
    //Search Function
    const handleSearchChange = (e) => {
@@ -91,8 +91,6 @@ function App() {
      setUserData(user);
      setIsModelOpen(true);
    };
-
- //let sangam = "unused variable here";
   
   return (
     <>
