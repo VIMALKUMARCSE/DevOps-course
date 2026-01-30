@@ -34,7 +34,7 @@
 //   loadData();
 // }, []);
 
- 
+
 //    //Search Function
 //    const handleSearchChange = (e) => {
 //       const searchtext = e.target.value.toLowerCase();
@@ -91,7 +91,7 @@
 //      setUserData(user);
 //      setIsModelOpen(true);
 //    };
-  
+
 //   return (
 //     <>
 //       <div className="container">
@@ -247,7 +247,7 @@ function App() {
     setIsModalOpen(true);
   };
 
-  let unusedvar = "unused varaible here";
+  // let unusedvar = "unused varaible here";
 
   return (
     <div className="container">
