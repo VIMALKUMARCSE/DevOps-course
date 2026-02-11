@@ -41,7 +41,7 @@ jobs:
       - name: Build frontend image
         run: docker build -t frontend ./client
 
-  deploy: #NOW INSIDE jobs
+  deploy:
     needs: build-and-lint
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -77,6 +77,9 @@ jobs:
             echo "Pulling latest code..."
             git fetch --all
             git reset --hard origin/main
+
+            echo "Moving to Docker compose folder..."
+            cd Docker-compose
 
             echo "Rebuilding containers..."
             docker compose up -d --build
