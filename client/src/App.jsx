@@ -88,11 +88,11 @@ function App() {
 
   return (
     <div className="container">
-      <h3>CRUD Application with React.js Frontend and Node.js Backend</h3>
+      <h3>CRUD Application with React.js Frontend and Node.js Backend and my first CI/CD</h3>
 
       <div className="input-search">
         <input type="search" placeholder="Search Text Here" onChange={handleSearchChange} />
-        <button className="btn blue" onClick={handleAddRecord}>Add User Record</button>
+        <button className="btn btn-primary" onClick={handleAddRecord}>Add User Record</button>
       </div>
 
       <table className="table">
