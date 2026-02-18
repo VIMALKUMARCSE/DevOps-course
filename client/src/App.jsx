@@ -92,7 +92,7 @@ function App() {
 
       <div className="input-search">
         <input type="search" placeholder="Search Text Here" onChange={handleSearchChange} />
-        <button className="btn btn-primary" onClick={handleAddRecord}>Add Users Record</button>
+        <button className="btn btn-primary" onClick={handleAddRecord}>Add User Record</button>
       </div>
 
       <table className="table">
