@@ -1,16 +1,14 @@
-version: "3.8"
-
 services:
-  server:
-    image: vimal1026/backend:latest
+  backend:
+    image: vimal1026/backend:${TAG}
     container_name: backend
     ports:
       - "8001:8001"
 
-  client:
-    image: vimal1026/frontend:latest
+  frontend:
+    image: vimal1026/frontend:${TAG}
     container_name: frontend
     ports:
       - "5174:5174"
     depends_on:
-      - server
+      - backend
