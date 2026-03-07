@@ -7,7 +7,8 @@
     "start": "nodemon index.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build": "echo build complete"
   },
   "keywords": [],
   "author": "",
