@@ -1,0 +1,53 @@
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # Build backend
+      - run: npm ci
+        working-directory: ./server
+      - run: npm run build
+        working-directory: ./server
+
+      # Build frontend
+      - run: npm ci
+        working-directory: ./client
+      - run: npm run build
+        working-directory: ./client
+
+      # Docker login & build images
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./server
+          push: true
+          tags: |
+            vimal1026/backend:${{ github.sha }}
+
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./client
+          push: true
+          tags: |
+            vimal1026/frontend:${{ github.sha }}
+  deploy-dev:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: DEV
+    steps:
+      - name: SSH to DEV EC2 & deploy
+        run: |
+          ssh -i dev_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+            cd ${{ secrets.EC2_APP_DIR }}/docker-compose
+            docker pull vimal1026/backend:${{ github.sha }}
+            docker pull vimal1026/frontend:${{ github.sha }}
+            docker compose up -d
+          EOF
