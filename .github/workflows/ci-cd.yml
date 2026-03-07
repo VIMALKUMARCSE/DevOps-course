@@ -51,9 +51,14 @@ jobs:
     runs-on: ubuntu-latest
     environment: DEV
     steps:
-      - name: SSH to DEV EC2 & deploy
+      - name: Create SSH key
         run: |
-          ssh -i dev_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+          echo "${{ secrets.EC2_KEY }}" > dev_key.pem
+          chmod 600 dev_key.pem
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i dev_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
             cd ${{ secrets.EC2_APP_DIR }}/docker-compose
             export TAG=${{ github.sha }}
             docker compose pull
